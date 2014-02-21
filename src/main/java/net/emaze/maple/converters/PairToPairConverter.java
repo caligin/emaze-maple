@@ -24,9 +24,12 @@ public class PairToPairConverter implements Converter {
         final ResolvableType sndSourceType = sourceType.getGeneric(1);
         final ResolvableType sndTargetType = targetType.getGeneric(1);
         final Pair<?, ?> p = (Pair<?, ?>) source;
-        final Object fst = converters.convert(fstSourceType, p.first(), fstTargetType);
-        final Object snd = converters.convert(sndSourceType, p.second(), sndTargetType);
-        return Maybe.just(Pair.of(fst, snd));
+        final Maybe<?> fst = converters.convert(fstSourceType, p.first(), fstTargetType);
+        final Maybe<?> snd = converters.convert(sndSourceType, p.second(), sndTargetType);
+        if (fst.hasValue() && snd.hasValue()) {
+            return Maybe.just(Pair.of(fst.value(), snd.value()));
+        }
+        return Maybe.nothing();
     }
 
 }

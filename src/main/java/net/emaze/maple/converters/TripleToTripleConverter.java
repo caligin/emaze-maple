@@ -26,9 +26,12 @@ public class TripleToTripleConverter implements Converter {
         final ResolvableType trdSourceType = sourceType.getGeneric(2);
         final ResolvableType trdTargetType = targetType.getGeneric(2);
         final Triple<?, ?, ?> p = (Triple<?, ?, ?>) source;
-        final Object fst = converters.convert(fstSourceType, p.first(), fstTargetType);
-        final Object snd = converters.convert(sndSourceType, p.second(), sndTargetType);
-        final Object trd = converters.convert(trdSourceType, p.third(), trdTargetType);
-        return Maybe.just(Triple.of(fst, snd, trd));
+        final Maybe<?> fst = converters.convert(fstSourceType, p.first(), fstTargetType);
+        final Maybe<?> snd = converters.convert(sndSourceType, p.second(), sndTargetType);
+        final Maybe<?> trd = converters.convert(trdSourceType, p.third(), trdTargetType);
+        if (fst.hasValue() && snd.hasValue() && trd.hasValue()) {
+            return Maybe.just(Triple.of(fst.value(), snd.value(), trd.value()));
+        }
+        return Maybe.nothing();
     }
 }

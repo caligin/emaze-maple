@@ -25,7 +25,11 @@ public class EitherToEitherConverter implements Converter {
         final ResolvableType elSourceType = sourceType.getGeneric(genericIndex);
         final ResolvableType elTargetType = targetType.getGeneric(genericIndex);
         final Object el = isRight ? m.maybe().value() : m.flip().maybe().value();
-        final Object convertedEl = converters.convert(elSourceType, el, elTargetType);
+        final Maybe<?> maybeConverted = converters.convert(elSourceType, el, elTargetType);
+        if (!maybeConverted.hasValue()) {
+            return Maybe.nothing();
+        }
+        final Object convertedEl = maybeConverted.value();
         final Either<?, ?> target = isRight ? Either.right(convertedEl) : Either.left(convertedEl);
         return Maybe.just(target);
     }

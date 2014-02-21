@@ -24,7 +24,7 @@ public class MaybeToMaybeConverter implements Converter {
         }
         final ResolvableType elSourceType = sourceType.getGeneric(0);
         final ResolvableType elTargetType = targetType.getGeneric(0);
-        final Object el = converters.convert(elSourceType, m.value(), elTargetType);
-        return Maybe.just(Maybe.just(el));
+        final Maybe<?> maybeConverted = converters.convert(elSourceType, m.value(), elTargetType);
+        return maybeConverted.hasValue() ? Maybe.just(maybeConverted) : Maybe.nothing();
     }
 }
