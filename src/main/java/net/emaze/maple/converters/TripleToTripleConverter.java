@@ -14,7 +14,7 @@ public class TripleToTripleConverter implements Converter {
 
     @Override
     public boolean canConvert(Converters converters, ResolvableType sourceType, Object source, ResolvableType targetType) {
-        return sourceType.getRawClass() == Triple.class && targetType.getRawClass() == Triple.class;
+        return sourceType.resolve() == Triple.class && targetType.resolve() == Triple.class;
     }
 
     @Override

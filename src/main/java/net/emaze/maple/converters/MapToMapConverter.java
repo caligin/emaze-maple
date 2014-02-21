@@ -15,7 +15,7 @@ public class MapToMapConverter implements Converter {
 
     @Override
     public boolean canConvert(Converters converters, ResolvableType sourceType, Object source, ResolvableType targetType) {
-        return Map.class.isAssignableFrom(targetType.getRawClass()) && source instanceof Map;
+        return Map.class.isAssignableFrom(targetType.resolve()) && source instanceof Map;
     }
 
     @Override

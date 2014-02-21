@@ -16,15 +16,15 @@ public class IterableToIterableConverter implements Converter {
 
     @Override
     public boolean canConvert(Converters converters, ResolvableType sourceType, Object source, ResolvableType targetType) {
-        return Iterable.class.isAssignableFrom(sourceType.getRawClass()) && Iterable.class.isAssignableFrom(targetType.getRawClass());
+        return Iterable.class.isAssignableFrom(sourceType.resolve()) && Iterable.class.isAssignableFrom(targetType.resolve());
     }
 
     @Override
     public Maybe<?> convert(Converters converters, ResolvableType sourceType, Object source, ResolvableType targetType) {
-        final Class<?> sourceClass = sourceType.getRawClass();
-        final Class<?> targetClass = targetType.getRawClass();
+        final Class<?> sourceClass = sourceType.resolve();
+        final Class<?> targetClass = targetType.resolve();
         final Maybe<Collection<Object>> maybeCollection = createCollection(targetClass);
-        if(!maybeCollection.hasValue()){
+        if (!maybeCollection.hasValue()) {
             return Maybe.nothing();
         }
         final Collection<Object> collection = maybeCollection.value();
@@ -39,10 +39,10 @@ public class IterableToIterableConverter implements Converter {
         }
         return Maybe.just(collection);
     }
-    
-    private static Maybe<Collection<Object>> createCollection(Class<?> targetClass){
-        if(List.class.isAssignableFrom(targetClass)){
-            return Maybe.<Collection<Object>>just(new ArrayList<>());                    
+
+    private static Maybe<Collection<Object>> createCollection(Class<?> targetClass) {
+        if (List.class.isAssignableFrom(targetClass)) {
+            return Maybe.<Collection<Object>>just(new ArrayList<>());
         }
         //TODO: set, queue, linkedlist ecc
         return Maybe.nothing();

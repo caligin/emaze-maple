@@ -14,7 +14,7 @@ public class PairToPairConverter implements Converter {
 
     @Override
     public boolean canConvert(Converters converters, ResolvableType sourceType, Object source, ResolvableType targetType) {
-        return sourceType.getRawClass() == Pair.class && targetType.getRawClass() == Pair.class;
+        return sourceType.resolve() == Pair.class && targetType.resolve() == Pair.class;
     }
 
     @Override

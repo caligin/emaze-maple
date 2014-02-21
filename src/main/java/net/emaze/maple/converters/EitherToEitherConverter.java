@@ -14,7 +14,7 @@ public class EitherToEitherConverter implements Converter {
 
     @Override
     public boolean canConvert(Converters converters, ResolvableType sourceType, Object source, ResolvableType targetType) {
-        return sourceType.getRawClass() == Either.class && targetType.getRawClass() == Either.class;
+        return sourceType.resolve() == Either.class && targetType.resolve() == Either.class;
     }
 
     @Override

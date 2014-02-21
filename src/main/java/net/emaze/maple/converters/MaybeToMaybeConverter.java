@@ -13,7 +13,7 @@ public class MaybeToMaybeConverter implements Converter {
 
     @Override
     public boolean canConvert(Converters converters, ResolvableType sourceType, Object source, ResolvableType targetType) {
-        return sourceType.getRawClass() == Maybe.class && targetType.getRawClass() == Maybe.class;
+        return sourceType.resolve() == Maybe.class && targetType.resolve() == Maybe.class;
     }
 
     @Override

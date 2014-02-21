@@ -58,7 +58,7 @@ public class NonCachingBeans implements Beans {
             if (method.isSynthetic()) {
                 continue;
             }
-            if (method.getParameterTypes().length != 0) {
+            if (method.getParameterTypes().length != 1) {
                 continue;
             }
             if (!method.getName().startsWith("set")) {

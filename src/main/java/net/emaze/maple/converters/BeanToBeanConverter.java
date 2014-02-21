@@ -25,13 +25,13 @@ public class BeanToBeanConverter implements Converter {
 
     @Override
     public boolean canConvert(Converters converters, ResolvableType sourceType, Object source, ResolvableType targetType) {
-        return beans.constructor(targetType.getRawClass()).hasValue();
+        return beans.constructor(targetType.resolve()).hasValue();
     }
 
     @Override
     public Maybe<?> convert(Converters converters, ResolvableType sourceType, Object source, ResolvableType targetType) {
         try {
-            final Constructor ctor = beans.constructor(targetType.getRawClass()).value();
+            final Constructor ctor = beans.constructor(targetType.resolve()).value();
             final Object target = ctor.newInstance();
             final Map<String, Mutator> targetMutators = beans.mutators(targetType.resolve());
             final Map<String, Accessor> sourceAccessors = beans.accessors(sourceType.resolve());

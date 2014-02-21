@@ -35,6 +35,6 @@ public class MethodMutator implements Mutator {
 
     @Override
     public ResolvableType type() {
-        return ResolvableType.forMethodReturnType(method, containingClass);
+        return ResolvableType.forMethodParameter(method, 0, containingClass);
     }
 }

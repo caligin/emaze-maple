@@ -15,7 +15,7 @@ public class ToLongConverter implements Converter {
 
     @Override
     public boolean canConvert(Converters converters, ResolvableType sourceType, Object source, ResolvableType targetType) {
-        final Class<?> targetClass = targetType.getRawClass();
+        final Class<?> targetClass = targetType.resolve();
         return targetClass == Long.class || targetClass == long.class;
     }
 

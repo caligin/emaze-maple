@@ -18,7 +18,7 @@ public class NullToNullConverter implements Converter {
 
     @Override
     public Maybe<?> convert(Converters converters, ResolvableType sourceType, Object source, ResolvableType targetType) {
-        return targetType.getRawClass().isPrimitive() ? Maybe.nothing() : Maybe.just(null);
+        return targetType.resolve().isPrimitive() ? Maybe.nothing() : Maybe.just(null);
     }
 
 }

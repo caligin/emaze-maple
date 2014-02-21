@@ -51,7 +51,7 @@ public class ResolvingMapper implements Mapper {
     public static ResolvingMapper create(Beans beans, Set<Class<?>> immutables, Converter... custom) {
         final List<Converter> builtins = Arrays.<Converter>asList(
                 new NullToNullConverter(),
-                new SameImmutablesConverter(immutables),
+                new SameImmutablesConverter(),
                 new ToByteConverter(),
                 new ToShortConverter(),
                 new ToIntConverter(),
@@ -68,7 +68,7 @@ public class ResolvingMapper implements Mapper {
                 new BeanToBeanConverter(beans)
         );
         final List<Converter> converters = Consumers.all(Multiplexing.flatten(new ArrayIterable<>(custom), builtins));
-        return new ResolvingMapper(new Converters(converters));
+        return new ResolvingMapper(new Converters(immutables, converters));
     }
 
     @Override
