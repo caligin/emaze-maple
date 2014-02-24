@@ -42,7 +42,7 @@ public class MapperTest {
 
     @Test
     public void mappingNullYieldsNull() throws Exception {
-        SimpleSource got = mapper.map(null, SimpleSource.class);
+        SimpleSource got = mapper.map((Object)null, SimpleSource.class);
         Assert.assertNull(got);
     }
 

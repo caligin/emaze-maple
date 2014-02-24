@@ -1,8 +1,8 @@
 package net.emaze.maple;
 
 import net.emaze.maple.converters.ToByteConverter;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -13,7 +13,10 @@ import net.emaze.dysfunctional.Multiplexing;
 import net.emaze.dysfunctional.dispatching.actions.BinaryAction;
 import net.emaze.dysfunctional.dispatching.delegates.Delegate;
 import net.emaze.dysfunctional.iterations.ArrayIterable;
+import net.emaze.dysfunctional.options.Either;
 import net.emaze.dysfunctional.options.Maybe;
+import net.emaze.dysfunctional.tuples.Pair;
+import net.emaze.dysfunctional.tuples.Triple;
 import net.emaze.maple.beans.Beans;
 import net.emaze.maple.converters.BeanToBeanConverter;
 import net.emaze.maple.converters.EitherToEitherConverter;
@@ -72,47 +75,25 @@ public class ResolvingMapper implements Mapper {
     }
 
     @Override
-    public <R, T> List<R> list(Iterable<T> source, Class<R> elementClass) {
-        final List<R> result = new ArrayList<>();
+    public <R, T, C extends Collection<R>> C map(Iterable<T> source, C target, Class<R> elementClass) {
         for (T s : source) {
-            result.add(map(s, elementClass));
+            target.add(map(s, elementClass));
         }
-        return result;
+        return target;
     }
 
     @Override
-    public <R, T> List<R> list(Iterable<T> source, Class<R> elementClass, BinaryAction<R, T> callback) {
-        final List<R> result = new ArrayList<>();
+    public <R, T, C extends Collection<R>> C map(Iterable<T> source, C target, Class<R> elementClass, BinaryAction<R, T> callback) {
         for (T s : source) {
             final R mapped = map(s, elementClass);
             callback.perform(mapped, s);
-            result.add(mapped);
+            target.add(mapped);
         }
-        return result;
+        return target;
     }
 
     @Override
-    public <R, T> Set<R> set(Iterable<T> source, Class<R> elementClass) {
-        final Set<R> result = new HashSet<>();
-        for (T s : source) {
-            result.add(map(s, elementClass));
-        }
-        return result;
-    }
-
-    @Override
-    public <R, T> Set<R> set(Iterable<T> source, Class<R> elementClass, BinaryAction<R, T> callback) {
-        final Set<R> result = new HashSet<>();
-        for (T s : source) {
-            final R mapped = map(s, elementClass);
-            callback.perform(mapped, s);
-            result.add(mapped);
-        }
-        return result;
-    }
-
-    @Override
-    public <RV, K, V> Map<K, RV> entries(Map<K, V> source, Class<RV> elementClass) {
+    public <RV, K, V> Map<K, RV> map(Map<K, V> source, Class<RV> elementClass) {
         final Map<K, RV> result = new HashMap<>();
         for (Map.Entry<K, V> entry : source.entrySet()) {
             result.put(entry.getKey(), map(entry.getValue(), elementClass));
@@ -121,7 +102,7 @@ public class ResolvingMapper implements Mapper {
     }
 
     @Override
-    public <RV, K, V> Map<K, RV> entries(Map<K, V> source, Class<RV> elementClass, BinaryAction<RV, V> callback) {
+    public <RV, K, V> Map<K, RV> map(Map<K, V> source, Class<RV> elementClass, BinaryAction<RV, V> callback) {
         final Map<K, RV> result = new HashMap<>();
         for (Map.Entry<K, V> entry : source.entrySet()) {
             final V value = entry.getValue();
@@ -133,15 +114,26 @@ public class ResolvingMapper implements Mapper {
     }
 
     @Override
-    public <R, T> Maybe<R> maybe(Maybe<T> source, final Class<R> elementClass) {
-        return source.fmap(new Delegate<R, T>() {
+    public <RL, RR, SL, SR> Either<RL, RR> map(Either<SL, SR> source, final Class<RL> leftClass, final Class<RR> rightClass) {
+        if (source.maybe().hasValue()) {
+            return Either.<RL, RR>right(source.maybe().fmap(new MapTo<RR, SR>(rightClass)).value());
+        }
+        return Either.<RL, RR>left(source.flip().maybe().fmap(new MapTo<RL, SL>(leftClass)).value());
+    }
 
-            @Override
-            public R perform(T t) {
-                return map(t, elementClass);
-            }
-        });
+    @Override
+    public <R1, R2, T1, T2> Pair<R1, R2> map(Pair<T1, T2> source, Class<R1> firstClass, Class<R2> secondClass) {
+        return source.fmap(new MapTo<R1, T1>(firstClass), new MapTo<R2, T2>(secondClass));
+    }
 
+    @Override
+    public <R1, R2, R3, T1, T2, T3> Triple<R1, R2, R3> map(Triple<T1, T2, T3> source, Class<R1> firstClass, Class<R2> secondClass, Class<R3> thirdClass) {
+        return source.fmap(new MapTo<R1, T1>(firstClass), new MapTo<R2, T2>(secondClass), new MapTo<R3, T3>(thirdClass));
+    }
+
+    @Override
+    public <R, T> Maybe<R> map(Maybe<T> source, final Class<R> elementClass) {
+        return source.fmap(new MapTo<R, T>(elementClass));
     }
 
     @Override
@@ -149,5 +141,20 @@ public class ResolvingMapper implements Mapper {
         final ResolvableType sourceType = source == null ? null : ResolvableType.forClass(source.getClass());
         final ResolvableType targetType = ResolvableType.forClass(targetClass);
         return (R) converters.convert(sourceType, source, targetType).value();
+    }
+
+    public class MapTo<R, T> implements Delegate<R, T> {
+
+        private final Class<R> cls;
+
+        public MapTo(Class<R> cls) {
+            this.cls = cls;
+        }
+
+        @Override
+        public R perform(T t) {
+            return map(t, cls);
+        }
+
     }
 }
