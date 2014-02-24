@@ -1,6 +1,7 @@
 package net.emaze.maple;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import net.emaze.dysfunctional.dispatching.actions.BinaryAction;
 import net.emaze.dysfunctional.options.Either;
@@ -19,6 +20,8 @@ public interface Mapper {
     <RV, K, V> Map<K, RV> map(Map<K, V> source, Class<RV> elementClass);
 
     <RV, K, V> Map<K, RV> map(Map<K, V> source, Class<RV> elementClass, BinaryAction<RV, V> callback);
+
+    <R, T> List<R> map(Iterable<T> source, Class<R> elementClass);
 
     <R, T, C extends Collection<R>> C map(Iterable<T> source, C target, Class<R> elementClass);
 

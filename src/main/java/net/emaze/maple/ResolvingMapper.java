@@ -1,10 +1,10 @@
 package net.emaze.maple;
 
+import java.util.ArrayList;
 import net.emaze.maple.converters.ToByteConverter;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -72,6 +72,15 @@ public class ResolvingMapper implements Mapper {
         );
         final List<Converter> converters = Consumers.all(Multiplexing.flatten(new ArrayIterable<>(custom), builtins));
         return new ResolvingMapper(new Converters(immutables, converters));
+    }
+
+    @Override
+    public <R, T> List<R> map(Iterable<T> source, Class<R> elementClass) {
+        final List<R> target = new ArrayList<>();
+        for (T s : source) {
+            target.add(map(s, elementClass));
+        }
+        return target;
     }
 
     @Override
