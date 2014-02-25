@@ -84,6 +84,17 @@ public class ResolvingMapper implements Mapper {
     }
 
     @Override
+    public <R, T> List<R> map(Iterable<T> source, Class<R> elementClass, BinaryAction<R, T> callback) {
+        final List<R> target = new ArrayList<>();
+        for (T s : source) {
+            final R mapped = map(s, elementClass);
+            callback.perform(mapped, s);
+            target.add(mapped);
+        }
+        return target;
+    }
+
+    @Override
     public <R, T, C extends Collection<R>> C map(Iterable<T> source, C target, Class<R> elementClass) {
         for (T s : source) {
             target.add(map(s, elementClass));

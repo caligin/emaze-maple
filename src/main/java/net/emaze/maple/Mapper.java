@@ -22,6 +22,7 @@ public interface Mapper {
     <RV, K, V> Map<K, RV> map(Map<K, V> source, Class<RV> elementClass, BinaryAction<RV, V> callback);
 
     <R, T> List<R> map(Iterable<T> source, Class<R> elementClass);
+    <R, T> List<R> map(Iterable<T> source, Class<R> elementClass, BinaryAction<R, T> callback);
 
     <R, T, C extends Collection<R>> C map(Iterable<T> source, C target, Class<R> elementClass);
 
