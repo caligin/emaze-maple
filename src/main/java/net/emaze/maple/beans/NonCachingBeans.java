@@ -1,6 +1,5 @@
 package net.emaze.maple.beans;
 
-import net.emaze.maple.beans.Beans;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -25,7 +24,7 @@ public class NonCachingBeans implements Beans {
     public Map<String, Accessor> accessors(Class<?> cls) {
         final Map<String, Accessor> r = new HashMap<>();
         for (Field field : cls.getFields()) {
-            final FieldAccessor fa = new FieldAccessor(cls, field);
+            final FieldAccessor fa = new FieldAccessor(field);
             r.put(fa.name(), fa);
         }
         for (Method method : cls.getMethods()) {
@@ -38,7 +37,7 @@ public class NonCachingBeans implements Beans {
             if (!method.getName().startsWith("is") && !method.getName().startsWith("get")) {
                 continue;
             }
-            final MethodAccessor ma = new MethodAccessor(cls, method);
+            final MethodAccessor ma = new MethodAccessor(method);
             r.put(ma.name(), ma);
         }
         return r;
@@ -51,7 +50,7 @@ public class NonCachingBeans implements Beans {
             if (Modifier.isFinal(field.getModifiers())) {
                 continue;
             }
-            final FieldMutator fm = new FieldMutator(cls, field);
+            final FieldMutator fm = new FieldMutator(field);
             r.put(fm.name(), fm);
         }
         for (Method method : cls.getMethods()) {
@@ -64,7 +63,7 @@ public class NonCachingBeans implements Beans {
             if (!method.getName().startsWith("set")) {
                 continue;
             }
-            final MethodMutator mm = new MethodMutator(cls, method);
+            final MethodMutator mm = new MethodMutator(method);
             r.put(mm.name(), mm);
         }
         return r;

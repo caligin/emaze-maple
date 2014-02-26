@@ -2,7 +2,7 @@ package net.emaze.maple;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import org.springframework.core.ResolvableType;
+import net.emaze.maple.types.MapleType;
 
 /**
  *
@@ -10,14 +10,12 @@ import org.springframework.core.ResolvableType;
  */
 public class MethodAccessor implements Accessor {
 
-    private final Class<?> containingClass;
     private final Method method;
 
-    public MethodAccessor(Class<?> containingClass, Method method) {
-        this.containingClass = containingClass;
+    public MethodAccessor(Method method) {
         this.method = method;
     }
-    
+
     @Override
     public Object access(Object self) {
         try {
@@ -30,14 +28,14 @@ public class MethodAccessor implements Accessor {
     @Override
     public String name() {
         final String methodName = method.getName();
-        return methodName.startsWith("i") 
+        return methodName.startsWith("i")
                 ? Character.toLowerCase(methodName.charAt(2)) + methodName.substring(3)
                 : Character.toLowerCase(methodName.charAt(3)) + methodName.substring(4);
     }
 
     @Override
-    public ResolvableType type() {
-        return ResolvableType.forMethodReturnType(method, containingClass);
+    public MapleType type(MapleType containingType) {
+        return MapleType.forMethodReturnType(method, containingType.getRawClass());
     }
-    
+
 }

@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Set;
 import net.emaze.dysfunctional.options.Maybe;
-import org.springframework.core.ResolvableType;
+import net.emaze.maple.types.MapleType;
 
 /**
  *
@@ -20,7 +20,7 @@ public class Converters {
         this.converters = converters;
     }
 
-    public Maybe<?> convert(ResolvableType sourceType, Object source, ResolvableType targetType) {
+    public Maybe<?> convert(MapleType sourceType, Object source, MapleType targetType) {
         for (Converter converter : converters) {
             if (converter.canConvert(this, sourceType, source, targetType)) {
                 return converter.convert(this, sourceType, source, targetType);

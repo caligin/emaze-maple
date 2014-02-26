@@ -1,13 +1,16 @@
 package net.emaze.maple;
 
-import org.springframework.core.ResolvableType;
+import net.emaze.maple.types.MapleType;
 
 /**
  *
  * @author rferranti
  */
 public interface Mutator {
+
     public void mutate(Object self, Object value);
+
     public String name();
-    public ResolvableType type();    
+
+    public MapleType type(MapleType containingType);
 }

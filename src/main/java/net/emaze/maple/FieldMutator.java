@@ -1,22 +1,20 @@
 package net.emaze.maple;
 
 import java.lang.reflect.Field;
-import org.springframework.core.ResolvableType;
+import net.emaze.maple.types.MapleType;
 
 /**
  *
  * @author rferranti
  */
 public class FieldMutator implements Mutator {
-    
-    private final Class<?> containingClass;
+
     private final Field field;
 
-    public FieldMutator(Class<?> containingClass, Field field) {
-        this.containingClass = containingClass;
+    public FieldMutator(Field field) {
         this.field = field;
     }
-    
+
     @Override
     public void mutate(Object self, Object value) {
         try {
@@ -32,9 +30,8 @@ public class FieldMutator implements Mutator {
     }
 
     @Override
-    public ResolvableType type() {
-        return ResolvableType.forField(field, containingClass);
+    public MapleType type(MapleType containingType) {
+        return MapleType.forField(field, containingType);
     }
 
-    
 }
