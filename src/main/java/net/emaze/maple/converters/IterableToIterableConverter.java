@@ -2,7 +2,13 @@ package net.emaze.maple.converters;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Deque;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import net.emaze.dysfunctional.options.Maybe;
 import net.emaze.maple.Converter;
 import net.emaze.maple.Converters;
@@ -41,10 +47,19 @@ public class IterableToIterableConverter implements Converter {
     }
 
     private static Maybe<Collection<Object>> createCollection(Class<?> targetClass) {
+        if (Deque.class.isAssignableFrom(targetClass)) {
+            return Maybe.<Collection<Object>>just(new LinkedList<>());
+        }
         if (List.class.isAssignableFrom(targetClass)) {
             return Maybe.<Collection<Object>>just(new ArrayList<>());
         }
-        //TODO: set, queue, linkedlist ecc
+        if (SortedSet.class.isAssignableFrom(targetClass)) {
+            return Maybe.<Collection<Object>>just(new TreeSet<>());
+        }
+        if (Set.class.isAssignableFrom(targetClass)) {
+            return Maybe.<Collection<Object>>just(new HashSet<>());
+        }
+        //TODO: missing collections
         return Maybe.nothing();
     }
 

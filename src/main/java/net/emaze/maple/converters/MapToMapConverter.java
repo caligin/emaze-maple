@@ -2,6 +2,9 @@ package net.emaze.maple.converters;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
+import java.util.concurrent.ConcurrentHashMap;
 import net.emaze.dysfunctional.options.Maybe;
 import net.emaze.maple.Converter;
 import net.emaze.maple.Converters;
@@ -20,7 +23,7 @@ public class MapToMapConverter implements Converter {
 
     @Override
     public Maybe<?> convert(Converters converters, MapleType sourceType, Object source, MapleType targetType) {
-        final Map<Object, Object> r = new HashMap<>();
+        final Map<Object, Object> r = createMap(targetType.getRawClass());
         final MapleType sourceKeyType = sourceType.getGeneric(0);
         final MapleType sourceValueType = sourceType.getGeneric(1);
         final MapleType targetKeyType = targetType.getGeneric(0);
@@ -36,4 +39,10 @@ public class MapToMapConverter implements Converter {
         return Maybe.just(r);
     }
 
+    private Map<Object, Object> createMap(Class<?> targetClass){
+        if(SortedMap.class.isAssignableFrom(targetClass)){
+            return new TreeMap<>();
+        }
+        return new ConcurrentHashMap<>();
+    }
 }
