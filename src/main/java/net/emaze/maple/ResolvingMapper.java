@@ -68,8 +68,7 @@ public class ResolvingMapper implements Mapper {
                 new EitherToEitherConverter(),
                 new MapToMapConverter(),
                 new IterableToIterableConverter(),
-                new BeanToBeanConverter(beans)
-        );
+                new BeanToBeanConverter(beans));
         final List<Converter> converters = Consumers.all(Multiplexing.flatten(new ArrayIterable<>(custom), builtins));
         return new ResolvingMapper(new Converters(immutables, converters));
     }
@@ -158,7 +157,20 @@ public class ResolvingMapper implements Mapper {
 
     @Override
     public <R> R map(Object source, Class<R> targetClass) {
-        final MapleType sourceType = source == null ? null : MapleType.forClass(source.getClass());
+        MapleType sourceType = source == null ? null : MapleType.forClass(source.getClass());
+//        if (source != null && source.getClass().getSimpleName().contains("$$_javassist_")) {
+//            try {
+//                final Field handlerField = source.getClass().getDeclaredField("handler");
+//                handlerField.setAccessible(true);
+//                Object handler = handlerField.get(source);
+//                final Field persistentClassField = Class.forName("org.hibernate.proxy.pojo.BasicLazyInitializer").getDeclaredField("persistentClass");
+//                persistentClassField.setAccessible(true);
+//                Class<?> persistenClass = (Class<?> )persistentClassField.get(handler);
+//                sourceType = MapleType.forClass(persistenClass);
+//            } catch (ClassNotFoundException | IllegalAccessException | NoSuchFieldException ex) {
+//                throw new IllegalStateException("asd");
+//            } 
+//        }
         final MapleType targetType = MapleType.forClass(targetClass);
         return (R) converters.convert(sourceType, source, targetType).value();
     }
@@ -175,6 +187,5 @@ public class ResolvingMapper implements Mapper {
         public R perform(T t) {
             return map(t, cls);
         }
-
     }
 }
