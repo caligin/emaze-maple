@@ -4,7 +4,7 @@
     <groupId>net.emaze</groupId>
     <artifactId>emaze-maple</artifactId>
     <name>emaze-maple</name>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <packaging>jar</packaging>
     <parent>
         <artifactId>emaze-parent</artifactId>
@@ -32,5 +32,6 @@
     <scm>
         <connection>scm:hg:https://hg.intranet/emaze-maple</connection>
         <developerConnection>scm:hg:file://${basedir}</developerConnection>
-    </scm>
+      <tag>1.0</tag>
+  </scm>
 </project>
