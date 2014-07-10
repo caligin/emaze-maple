@@ -34,6 +34,8 @@ import net.emaze.maple.converters.ToShortConverter;
 import net.emaze.maple.converters.ToStringConverter;
 import net.emaze.maple.converters.TripleToTripleConverter;
 import net.emaze.maple.types.MapleType;
+import net.emaze.maple.proxies.ProxyInspectors;
+
 
 /**
  *
@@ -42,13 +44,19 @@ import net.emaze.maple.types.MapleType;
 public class ResolvingMapper implements Mapper {
 
     private final Converters converters;
+    private final ProxyInspectors proxies;
+    
 
-    public ResolvingMapper(Converters converters) {
+    public ResolvingMapper(Converters converters, ProxyInspectors proxies) {
         this.converters = converters;
+        this.proxies = proxies;
     }
 
     public static ResolvingMapper create(Converters converters) {
-        return new ResolvingMapper(converters);
+        return new ResolvingMapper(converters, ProxyInspectors.detect());
+    }
+    public static ResolvingMapper create(Converters converters, ProxyInspectors proxies) {
+        return new ResolvingMapper(converters, proxies);
     }
 
     public static ResolvingMapper create(Beans beans, Set<Class<?>> immutables, Converter... custom) {
@@ -70,7 +78,7 @@ public class ResolvingMapper implements Mapper {
                 new IterableToIterableConverter(),
                 new BeanToBeanConverter(beans));
         final List<Converter> converters = Consumers.all(Multiplexing.flatten(new ArrayIterable<>(custom), builtins));
-        return new ResolvingMapper(new Converters(immutables, converters));
+        return new ResolvingMapper(new Converters(immutables, converters), ProxyInspectors.detect());
     }
 
     @Override
@@ -157,20 +165,8 @@ public class ResolvingMapper implements Mapper {
 
     @Override
     public <R> R map(Object source, Class<R> targetClass) {
-        MapleType sourceType = source == null ? null : MapleType.forClass(source.getClass());
-//        if (source != null && source.getClass().getSimpleName().contains("$$_javassist_")) {
-//            try {
-//                final Field handlerField = source.getClass().getDeclaredField("handler");
-//                handlerField.setAccessible(true);
-//                Object handler = handlerField.get(source);
-//                final Field persistentClassField = Class.forName("org.hibernate.proxy.pojo.BasicLazyInitializer").getDeclaredField("persistentClass");
-//                persistentClassField.setAccessible(true);
-//                Class<?> persistenClass = (Class<?> )persistentClassField.get(handler);
-//                sourceType = MapleType.forClass(persistenClass);
-//            } catch (ClassNotFoundException | IllegalAccessException | NoSuchFieldException ex) {
-//                throw new IllegalStateException("asd");
-//            } 
-//        }
+        final Class<?> sourceClass = proxies.inspect(source);
+        final MapleType sourceType = sourceClass == null ? null : MapleType.forClass(sourceClass);
         final MapleType targetType = MapleType.forClass(targetClass);
         return (R) converters.convert(sourceType, source, targetType).value();
     }

@@ -66,7 +66,6 @@ public class ReifiedGenericsTest {
     }
 
     @Test
-    @Ignore
     public void canMapReifiedGenericWithMethods() {
         final ReifiedSourceWithAccessor src = new ReifiedSourceWithAccessor();
         src.field = Maybe.just("1");
