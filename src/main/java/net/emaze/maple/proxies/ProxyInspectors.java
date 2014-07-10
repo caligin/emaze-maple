@@ -25,7 +25,8 @@ public class ProxyInspectors {
         }
         if (isPresent("org.springframework.cglib.proxy.Enhancer")) {
             inspectors.add(new SpringCglibProxyInspector());
-        }else if(isPresent("net.sf.cglib.proxy.Enhancer")){
+        }
+        if(isPresent("net.sf.cglib.proxy.Enhancer")){
             inspectors.add(new CglibProxyInspector());
         }
         return new ProxyInspectors(inspectors.toArray(new ProxyInspector[0]));

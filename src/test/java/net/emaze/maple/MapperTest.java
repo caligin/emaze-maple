@@ -13,7 +13,7 @@ import org.junit.Test;
  */
 public class MapperTest {
 
-    ResolvingMapper mapper = ResolvingMapper.create(new NonCachingBeans(), new HashSet<Class<?>>());
+    final ResolvingMapper mapper = ResolvingMapper.Builder.defaults().build();
 
     public static class SourceWithCollectionField {
 

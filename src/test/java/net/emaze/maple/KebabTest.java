@@ -14,7 +14,7 @@ import org.junit.Test;
  */
 public class KebabTest {
 
-    private final ResolvingMapper mapper = ResolvingMapper.create(new NonCachingBeans(), new HashSet<Class<?>>());
+    final ResolvingMapper mapper = ResolvingMapper.Builder.defaults().build();
 
     public static class Kebab<T1, T2, T3, T4> {
 

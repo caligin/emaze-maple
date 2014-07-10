@@ -1,7 +1,5 @@
 package net.emaze.maple;
 
-import java.util.HashSet;
-import net.emaze.maple.beans.NonCachingBeans;
 import org.junit.Test;
 
 /**
@@ -27,7 +25,7 @@ public class EdgeCaseTests {
 
     @Test
     public void test3() {
-        final ResolvingMapper mapper = ResolvingMapper.create(new NonCachingBeans(), new HashSet<Class<?>>());
+        final ResolvingMapper mapper = ResolvingMapper.Builder.defaults().build();
         final Source src = new Source();
         src.wrapped = new Wrapper<>();
         src.wrapped.value = 12;

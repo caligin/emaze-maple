@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import net.emaze.maple.converters.ToByteConverter;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -12,12 +14,13 @@ import net.emaze.dysfunctional.Consumers;
 import net.emaze.dysfunctional.Multiplexing;
 import net.emaze.dysfunctional.dispatching.actions.BinaryAction;
 import net.emaze.dysfunctional.dispatching.delegates.Delegate;
-import net.emaze.dysfunctional.iterations.ArrayIterable;
 import net.emaze.dysfunctional.options.Either;
 import net.emaze.dysfunctional.options.Maybe;
 import net.emaze.dysfunctional.tuples.Pair;
 import net.emaze.dysfunctional.tuples.Triple;
 import net.emaze.maple.beans.Beans;
+import net.emaze.maple.beans.CachingBeans;
+import net.emaze.maple.beans.NonCachingBeans;
 import net.emaze.maple.converters.BeanToBeanConverter;
 import net.emaze.maple.converters.EitherToEitherConverter;
 import net.emaze.maple.converters.IterableToIterableConverter;
@@ -33,9 +36,9 @@ import net.emaze.maple.converters.ToLongConverter;
 import net.emaze.maple.converters.ToShortConverter;
 import net.emaze.maple.converters.ToStringConverter;
 import net.emaze.maple.converters.TripleToTripleConverter;
+import net.emaze.maple.proxies.ProxyInspector;
 import net.emaze.maple.types.MapleType;
 import net.emaze.maple.proxies.ProxyInspectors;
-
 
 /**
  *
@@ -44,41 +47,11 @@ import net.emaze.maple.proxies.ProxyInspectors;
 public class ResolvingMapper implements Mapper {
 
     private final Converters converters;
-    private final ProxyInspectors proxies;
-    
+    private final ProxyInspectors proxyInspectors;
 
-    public ResolvingMapper(Converters converters, ProxyInspectors proxies) {
+    public ResolvingMapper(Converters converters, ProxyInspectors proxyInspectors) {
         this.converters = converters;
-        this.proxies = proxies;
-    }
-
-    public static ResolvingMapper create(Converters converters) {
-        return new ResolvingMapper(converters, ProxyInspectors.detect());
-    }
-    public static ResolvingMapper create(Converters converters, ProxyInspectors proxies) {
-        return new ResolvingMapper(converters, proxies);
-    }
-
-    public static ResolvingMapper create(Beans beans, Set<Class<?>> immutables, Converter... custom) {
-        final List<Converter> builtins = Arrays.<Converter>asList(
-                new NullToNullConverter(),
-                new SameImmutablesConverter(),
-                new ToByteConverter(),
-                new ToShortConverter(),
-                new ToIntConverter(),
-                new ToLongConverter(),
-                new ToFloatConverter(),
-                new ToDoubleConverter(),
-                new ToStringConverter(),
-                new PairToPairConverter(),
-                new TripleToTripleConverter(),
-                new MaybeToMaybeConverter(),
-                new EitherToEitherConverter(),
-                new MapToMapConverter(),
-                new IterableToIterableConverter(),
-                new BeanToBeanConverter(beans));
-        final List<Converter> converters = Consumers.all(Multiplexing.flatten(new ArrayIterable<>(custom), builtins));
-        return new ResolvingMapper(new Converters(immutables, converters), ProxyInspectors.detect());
+        this.proxyInspectors = proxyInspectors;
     }
 
     @Override
@@ -165,7 +138,7 @@ public class ResolvingMapper implements Mapper {
 
     @Override
     public <R> R map(Object source, Class<R> targetClass) {
-        final Class<?> sourceClass = proxies.inspect(source);
+        final Class<?> sourceClass = proxyInspectors.inspect(source);
         final MapleType sourceType = sourceClass == null ? null : MapleType.forClass(sourceClass);
         final MapleType targetType = MapleType.forClass(targetClass);
         return (R) converters.convert(sourceType, source, targetType).value();
@@ -182,6 +155,76 @@ public class ResolvingMapper implements Mapper {
         @Override
         public R perform(T t) {
             return map(t, cls);
+        }
+    }
+
+    public static class Builder {
+
+        private ProxyInspectors proxyInspectors;
+        private List<Converter> customConverters;
+        private List<Converter> builtinConverters;
+        private Set<Class<?>> immutables;
+
+        public static Builder defaults() {
+            return new Builder()
+                    .withBuiltinConverters(new CachingBeans(new NonCachingBeans()))
+                    .withDetectedProxyInspectors();
+        }
+
+        public static Builder clean() {
+            return new Builder();
+        }
+
+        public Builder withBuiltinConverters(Beans beans) {
+            this.builtinConverters = Arrays.<Converter>asList(
+                    new NullToNullConverter(),
+                    new SameImmutablesConverter(),
+                    new ToByteConverter(),
+                    new ToShortConverter(),
+                    new ToIntConverter(),
+                    new ToLongConverter(),
+                    new ToFloatConverter(),
+                    new ToDoubleConverter(),
+                    new ToStringConverter(),
+                    new PairToPairConverter(),
+                    new TripleToTripleConverter(),
+                    new MaybeToMaybeConverter(),
+                    new EitherToEitherConverter(),
+                    new MapToMapConverter(),
+                    new IterableToIterableConverter(),
+                    new BeanToBeanConverter(beans)
+            );
+            return this;
+        }
+
+        public Builder withCustomConverters(Converter... converters) {
+            customConverters = Arrays.asList(converters);
+            return this;
+        }
+
+        public Builder withImmutables(Class<?>... immutables) {
+            this.immutables = new HashSet<>(Arrays.asList(immutables));
+            return this;
+        }
+
+        public Builder withProxyInspectors(ProxyInspectors proxyInspectors) {
+            this.proxyInspectors = proxyInspectors;
+            return this;
+        }
+
+        public Builder withDetectedProxyInspectors() {
+            this.proxyInspectors = ProxyInspectors.detect();
+            return this;
+        }
+
+        public ResolvingMapper build() {
+            final List<Converter> cl = Consumers.all(Multiplexing.flatten(
+                    customConverters == null ? Arrays.<Converter>asList() : customConverters,
+                    builtinConverters == null ? Arrays.<Converter>asList() : builtinConverters
+            ));
+            final Set<Class<?>> cs = this.immutables == null ? Collections.<Class<?>>emptySet() : this.immutables;
+            final ProxyInspectors pi = this.proxyInspectors == null ? new ProxyInspectors(new ProxyInspector[0]) : this.proxyInspectors;
+            return new ResolvingMapper(new Converters(cs, cl), pi);
         }
     }
 }

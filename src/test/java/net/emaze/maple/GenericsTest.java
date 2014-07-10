@@ -1,10 +1,7 @@
 package net.emaze.maple;
 
-import java.util.HashSet;
 import junit.framework.Assert;
 import net.emaze.dysfunctional.options.Maybe;
-import net.emaze.maple.beans.NonCachingBeans;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -13,7 +10,7 @@ import org.junit.Test;
  */
 public class GenericsTest {
 
-    ResolvingMapper mapper = ResolvingMapper.create(new NonCachingBeans(), new HashSet<Class<?>>());
+    final ResolvingMapper mapper = ResolvingMapper.Builder.defaults().build();
 
     public static class SourceWithField {
 
