@@ -1,7 +1,7 @@
 package net.emaze.maple;
 
 import net.emaze.dysfunctional.options.Maybe;
-import net.emaze.maple.types.MapleType;
+import org.springframework.core.ResolvableType;
 
 /**
  *
@@ -9,7 +9,7 @@ import net.emaze.maple.types.MapleType;
  */
 public interface Converter {
 
-    public boolean canConvert(Converters converters, MapleType sourceType, Object source, MapleType targetType);
+    public boolean canConvert(Converters converters, ResolvableType sourceType, Object source, ResolvableType targetType);
 
-    public Maybe<?> convert(Converters converters, MapleType sourceType, Object source, MapleType targetType);
+    public Maybe<?> convert(Converters converters, ResolvableType sourceType, Object source, ResolvableType targetType);
 }

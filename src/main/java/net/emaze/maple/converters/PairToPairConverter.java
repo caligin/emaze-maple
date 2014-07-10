@@ -4,7 +4,7 @@ import net.emaze.dysfunctional.options.Maybe;
 import net.emaze.dysfunctional.tuples.Pair;
 import net.emaze.maple.Converter;
 import net.emaze.maple.Converters;
-import net.emaze.maple.types.MapleType;
+import org.springframework.core.ResolvableType;
 
 /**
  *
@@ -13,16 +13,16 @@ import net.emaze.maple.types.MapleType;
 public class PairToPairConverter implements Converter {
 
     @Override
-    public boolean canConvert(Converters converters, MapleType sourceType, Object source, MapleType targetType) {
+    public boolean canConvert(Converters converters, ResolvableType sourceType, Object source, ResolvableType targetType) {
         return sourceType.resolve() == Pair.class && targetType.resolve() == Pair.class;
     }
 
     @Override
-    public Maybe<?> convert(Converters converters, MapleType sourceType, Object source, MapleType targetType) {
-        final MapleType fstSourceType = sourceType.getGeneric(0);
-        final MapleType fstTargetType = targetType.getGeneric(0);
-        final MapleType sndSourceType = sourceType.getGeneric(1);
-        final MapleType sndTargetType = targetType.getGeneric(1);
+    public Maybe<?> convert(Converters converters, ResolvableType sourceType, Object source, ResolvableType targetType) {
+        final ResolvableType fstSourceType = sourceType.getGeneric(0);
+        final ResolvableType fstTargetType = targetType.getGeneric(0);
+        final ResolvableType sndSourceType = sourceType.getGeneric(1);
+        final ResolvableType sndTargetType = targetType.getGeneric(1);
         final Pair<?, ?> p = (Pair<?, ?>) source;
         final Maybe<?> fst = converters.convert(fstSourceType, p.first(), fstTargetType);
         final Maybe<?> snd = converters.convert(sndSourceType, p.second(), sndTargetType);

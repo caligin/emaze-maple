@@ -1,7 +1,7 @@
 package net.emaze.maple;
 
 import java.lang.reflect.Field;
-import net.emaze.maple.types.MapleType;
+import org.springframework.core.ResolvableType;
 
 /**
  *
@@ -30,8 +30,8 @@ public class FieldAccessor implements Accessor {
     }
 
     @Override
-    public MapleType type(MapleType containingType) {
-        return MapleType.forField(field, containingType);
+    public ResolvableType type(ResolvableType containingType) {
+        return ResolvableType.forField(field, containingType);
     }
 
 }

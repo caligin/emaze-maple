@@ -2,7 +2,7 @@ package net.emaze.maple;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import net.emaze.maple.types.MapleType;
+import org.springframework.core.ResolvableType;
 
 /**
  *
@@ -32,7 +32,7 @@ public class MethodMutator implements Mutator {
     }
 
     @Override
-    public MapleType type(MapleType containingType) {
-        return MapleType.forMethodParameter(method, 0, containingType.getRawClass());
+    public ResolvableType type(ResolvableType containingType) {
+        return ResolvableType.forMethodParameter(method, 0, containingType.getRawClass());
     }
 }

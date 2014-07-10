@@ -9,7 +9,7 @@ import net.emaze.maple.beans.Beans;
 import net.emaze.maple.Converter;
 import net.emaze.maple.Converters;
 import net.emaze.maple.Mutator;
-import net.emaze.maple.types.MapleType;
+import org.springframework.core.ResolvableType;
 
 /**
  *
@@ -24,12 +24,12 @@ public class BeanToBeanConverter implements Converter {
     }
 
     @Override
-    public boolean canConvert(Converters converters, MapleType sourceType, Object source, MapleType targetType) {
+    public boolean canConvert(Converters converters, ResolvableType sourceType, Object source, ResolvableType targetType) {
         return beans.constructor(targetType.resolve()).hasValue();
     }
 
     @Override
-    public Maybe<?> convert(Converters converters, MapleType sourceType, Object source, MapleType targetType) {
+    public Maybe<?> convert(Converters converters, ResolvableType sourceType, Object source, ResolvableType targetType) {
         try {
             final Constructor ctor = beans.constructor(targetType.resolve()).value();
             final Object target = ctor.newInstance();

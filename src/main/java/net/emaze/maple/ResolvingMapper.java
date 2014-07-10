@@ -37,7 +37,7 @@ import net.emaze.maple.converters.ToShortConverter;
 import net.emaze.maple.converters.ToStringConverter;
 import net.emaze.maple.converters.TripleToTripleConverter;
 import net.emaze.maple.proxies.ProxyInspector;
-import net.emaze.maple.types.MapleType;
+import org.springframework.core.ResolvableType;
 import net.emaze.maple.proxies.ProxyInspectors;
 
 /**
@@ -139,8 +139,8 @@ public class ResolvingMapper implements Mapper {
     @Override
     public <R> R map(Object source, Class<R> targetClass) {
         final Class<?> sourceClass = proxyInspectors.inspect(source);
-        final MapleType sourceType = sourceClass == null ? null : MapleType.forClass(sourceClass);
-        final MapleType targetType = MapleType.forClass(targetClass);
+        final ResolvableType sourceType = sourceClass == null ? null : ResolvableType.forClass(sourceClass);
+        final ResolvableType targetType = ResolvableType.forClass(targetClass);
         return (R) converters.convert(sourceType, source, targetType).value();
     }
 

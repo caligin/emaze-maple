@@ -1,6 +1,6 @@
 package net.emaze.maple;
 
-import net.emaze.maple.types.MapleType;
+import org.springframework.core.ResolvableType;
 
 /**
  *
@@ -12,5 +12,5 @@ public interface Accessor {
 
     public String name();
 
-    public MapleType type(MapleType containingType);
+    public ResolvableType type(ResolvableType containingType);
 }

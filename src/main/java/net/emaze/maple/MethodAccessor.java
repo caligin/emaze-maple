@@ -2,7 +2,7 @@ package net.emaze.maple;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import net.emaze.maple.types.MapleType;
+import org.springframework.core.ResolvableType;
 
 /**
  *
@@ -34,8 +34,8 @@ public class MethodAccessor implements Accessor {
     }
 
     @Override
-    public MapleType type(MapleType containingType) {
-        return MapleType.forMethodReturnType(method, containingType.getRawClass());
+    public ResolvableType type(ResolvableType containingType) {
+        return ResolvableType.forMethodReturnType(method, containingType.getRawClass());
     }
 
 }

@@ -12,7 +12,7 @@ import java.util.TreeSet;
 import net.emaze.dysfunctional.options.Maybe;
 import net.emaze.maple.Converter;
 import net.emaze.maple.Converters;
-import net.emaze.maple.types.MapleType;
+import org.springframework.core.ResolvableType;
 
 /**
  *
@@ -21,12 +21,12 @@ import net.emaze.maple.types.MapleType;
 public class IterableToIterableConverter implements Converter {
 
     @Override
-    public boolean canConvert(Converters converters, MapleType sourceType, Object source, MapleType targetType) {
+    public boolean canConvert(Converters converters, ResolvableType sourceType, Object source, ResolvableType targetType) {
         return Iterable.class.isAssignableFrom(sourceType.resolve()) && Iterable.class.isAssignableFrom(targetType.resolve());
     }
 
     @Override
-    public Maybe<?> convert(Converters converters, MapleType sourceType, Object source, MapleType targetType) {
+    public Maybe<?> convert(Converters converters, ResolvableType sourceType, Object source, ResolvableType targetType) {
         final Class<?> sourceClass = sourceType.resolve();
         final Class<?> targetClass = targetType.resolve();
         final Maybe<Collection<Object>> maybeCollection = createCollection(targetClass);
@@ -34,8 +34,8 @@ public class IterableToIterableConverter implements Converter {
             return Maybe.nothing();
         }
         final Collection<Object> collection = maybeCollection.value();
-        final MapleType targetElementType = targetType.getGeneric(0);
-        final MapleType sourceElementType = sourceType.getGeneric(0);
+        final ResolvableType targetElementType = targetType.getGeneric(0);
+        final ResolvableType sourceElementType = sourceType.getGeneric(0);
         for (Object object : (Iterable<?>) source) {
             final Maybe<?> el = converters.convert(sourceElementType, object, targetElementType);
             if (!el.hasValue()) {
