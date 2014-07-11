@@ -19,7 +19,7 @@ public class ToIntConverter implements Converter {
 
     @Override
     public Maybe<?> convert(Converters converters, ResolvableType sourceType, Object source, ResolvableType targetType) {
-        if(source instanceof String){
+        if(source instanceof CharSequence){
             return Maybe.just(Integer.parseInt(source.toString()));
         }
         if(source instanceof Number){

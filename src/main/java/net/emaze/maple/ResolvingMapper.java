@@ -12,8 +12,10 @@ import net.emaze.maple.beans.Beans;
 import net.emaze.maple.beans.CachingBeans;
 import net.emaze.maple.beans.NonCachingBeans;
 import net.emaze.maple.converters.BeanToBeanConverter;
+import net.emaze.maple.converters.DateToLongConverter;
 import net.emaze.maple.converters.EitherToEitherConverter;
 import net.emaze.maple.converters.IterableToIterableConverter;
+import net.emaze.maple.converters.LongToDateConverter;
 import net.emaze.maple.converters.MapToMapConverter;
 import net.emaze.maple.converters.MaybeToMaybeConverter;
 import net.emaze.maple.converters.NullToNullConverter;
@@ -88,6 +90,8 @@ public class ResolvingMapper implements Mapper {
                     new EitherToEitherConverter(),
                     new MapToMapConverter(),
                     new IterableToIterableConverter(),
+                    new LongToDateConverter(),
+                    new DateToLongConverter(),
                     new BeanToBeanConverter(beans)
             );
             return this;

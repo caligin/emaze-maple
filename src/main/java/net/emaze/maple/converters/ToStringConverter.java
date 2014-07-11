@@ -13,8 +13,7 @@ public class ToStringConverter implements Converter {
 
     @Override
     public boolean canConvert(Converters converters, ResolvableType sourceType, Object source, ResolvableType targetType) {
-        final Class<?> targetClass = targetType.resolve();
-        return targetClass == String.class;
+        return targetType.resolve() == String.class;
     }
 
     @Override
