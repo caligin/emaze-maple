@@ -1,6 +1,6 @@
 package net.emaze.maple;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 import net.emaze.dysfunctional.options.Maybe;
 import org.junit.Test;
 

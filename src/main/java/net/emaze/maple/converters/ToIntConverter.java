@@ -1,7 +1,5 @@
 package net.emaze.maple.converters;
 
-
-
 import net.emaze.dysfunctional.options.Maybe;
 import net.emaze.maple.Converter;
 import net.emaze.maple.Converters;
@@ -30,5 +28,4 @@ public class ToIntConverter implements Converter {
         return Maybe.nothing();
     }
 
-    
 }

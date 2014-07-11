@@ -45,9 +45,9 @@ public class BeanToBeanConverter implements Converter {
                 final Accessor accessor = entry.getValue();
                 final Mutator mutator = targetMutators.get(field);
                 final Maybe<?> converted = converters.convert(accessor.type(sourceType), accessor.access(source), mutator.type(targetType));
-                for (Object c : converted) {
+                converted.forEach((c) -> {
                     mutator.mutate(target, c);
-                }
+                });
             }
             return Maybe.just(target);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException ex) {

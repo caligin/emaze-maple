@@ -1,6 +1,5 @@
 package net.emaze.maple.converters;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
