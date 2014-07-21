@@ -24,31 +24,16 @@ public class CachingBeans implements Beans {
 
     @Override
     public Map<String, Accessor> accessors(Class<?> cls) {
-        if (accessorsCache.containsKey(cls)) {
-            return accessorsCache.get(cls);
-        }
-        final Map<String, Accessor> accessors = inner.accessors(cls);
-        accessorsCache.put(cls, accessors);
-        return accessors;
+        return accessorsCache.computeIfAbsent(cls, inner::accessors);
     }
 
     @Override
     public Map<String, Mutator> mutators(Class<?> cls) {
-        if (mutatorsCache.containsKey(cls)) {
-            return mutatorsCache.get(cls);
-        }
-        final Map<String, Mutator> accessors = inner.mutators(cls);
-        mutatorsCache.put(cls, accessors);
-        return accessors;
+        return mutatorsCache.computeIfAbsent(cls, inner::mutators);
     }
 
     @Override
     public Maybe<Constructor> constructor(Class<?> cls) {
-        if (constructorsCache.containsKey(cls)) {
-            return constructorsCache.get(cls);
-        }
-        final Maybe<Constructor> beanConstructor = inner.constructor(cls);
-        constructorsCache.put(cls, beanConstructor);
-        return beanConstructor;
+        return constructorsCache.computeIfAbsent(cls, inner::constructor);
     }
 }
