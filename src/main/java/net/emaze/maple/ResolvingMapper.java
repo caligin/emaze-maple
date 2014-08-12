@@ -2,6 +2,7 @@ package net.emaze.maple;
 
 import net.emaze.maple.converters.ToByteConverter;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -60,7 +61,7 @@ public class ResolvingMapper implements Mapper {
         private ProxyInspectors proxyInspectors;
         private List<Converter> customConverters;
         private List<Converter> builtinConverters;
-        private Set<Class<?>> immutables;
+        private Set<Class<?>> immutables = new HashSet<>();
 
         public static Builder defaults() {
             return new Builder()
@@ -103,7 +104,12 @@ public class ResolvingMapper implements Mapper {
         }
 
         public Builder withImmutables(Class<?>... immutables) {
-            this.immutables = new HashSet<>(Arrays.asList(immutables));
+            this.immutables.addAll(Arrays.asList(immutables));
+            return this;
+        }
+
+        public Builder withImmutables(Collection<Class<?>> immutables) {
+            this.immutables.addAll(immutables);
             return this;
         }
 
