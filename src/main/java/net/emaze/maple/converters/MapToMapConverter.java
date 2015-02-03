@@ -22,7 +22,7 @@ public class MapToMapConverter implements Converter {
 
     @Override
     public Maybe<?> convert(Converters converters, ResolvableType sourceType, Object source, ResolvableType targetType) {
-        final Map<Object, Object> r = createMap(targetType.getRawClass());
+        final Map<Object, Object> r = createMap(targetType.getRawClass(), source);
         final ResolvableType sourceKeyType = sourceType.getGeneric(0);
         final ResolvableType sourceValueType = sourceType.getGeneric(1);
         final ResolvableType targetKeyType = targetType.getGeneric(0);
@@ -38,9 +38,9 @@ public class MapToMapConverter implements Converter {
         return Maybe.just(r);
     }
 
-    private Map<Object, Object> createMap(Class<?> targetClass){
-        if(SortedMap.class.isAssignableFrom(targetClass)){
-            return new TreeMap<>();
+    private Map<Object, Object> createMap(Class<?> targetClass, Object source) {
+        if (SortedMap.class.isAssignableFrom(targetClass)) {
+            return new TreeMap<>(((SortedMap) source).comparator());
         }
         return new HashMap<>();
     }
