@@ -1,9 +1,9 @@
 package net.emaze.maple.converters;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import java.util.concurrent.ConcurrentHashMap;
 import net.emaze.dysfunctional.options.Maybe;
 import net.emaze.maple.Converter;
 import net.emaze.maple.Converters;
@@ -42,6 +42,6 @@ public class MapToMapConverter implements Converter {
         if(SortedMap.class.isAssignableFrom(targetClass)){
             return new TreeMap<>();
         }
-        return new ConcurrentHashMap<>();
+        return new HashMap<>();
     }
 }
