@@ -45,8 +45,7 @@
         </dependency>
     </dependencies>
     <scm>
-        <connection>scm:hg:https://hg.intranet/emaze-maple</connection>
-        <developerConnection>scm:hg:file://${basedir}</developerConnection>
+        <developerConnection>scm:git:file://${basedir}</developerConnection>
       <tag>HEAD</tag>
   </scm>
 </project>
