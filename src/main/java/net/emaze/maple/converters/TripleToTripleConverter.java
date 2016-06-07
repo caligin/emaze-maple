@@ -6,10 +6,7 @@ import net.emaze.maple.Converter;
 import net.emaze.maple.Converters;
 import org.springframework.core.ResolvableType;
 
-/**
- *
- * @author rferranti
- */
+
 public class TripleToTripleConverter implements Converter {
 
     @Override

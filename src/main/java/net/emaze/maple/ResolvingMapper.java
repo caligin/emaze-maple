@@ -34,10 +34,7 @@ import net.emaze.maple.proxies.ProxyInspector;
 import org.springframework.core.ResolvableType;
 import net.emaze.maple.proxies.ProxyInspectors;
 
-/**
- *
- * @author rferranti
- */
+
 public class ResolvingMapper implements Mapper {
 
     private final Converters converters;

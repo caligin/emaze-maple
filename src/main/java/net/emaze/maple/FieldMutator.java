@@ -3,10 +3,7 @@ package net.emaze.maple;
 import java.lang.reflect.Field;
 import org.springframework.core.ResolvableType;
 
-/**
- *
- * @author rferranti
- */
+
 public class FieldMutator implements Mutator {
 
     private final Field field;

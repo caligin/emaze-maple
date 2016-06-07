@@ -7,10 +7,7 @@ import net.emaze.dysfunctional.options.Maybe;
 import net.emaze.maple.Accessor;
 import net.emaze.maple.Mutator;
 
-/**
- *
- * @author rferranti
- */
+
 public class CachingBeans implements Beans {
 
     private final Map<Class<?>, Map<String, Accessor>> accessorsCache = new ConcurrentHashMap<>();

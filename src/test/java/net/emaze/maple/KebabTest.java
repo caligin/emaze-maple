@@ -1,17 +1,11 @@
 package net.emaze.maple;
 
-import java.util.HashSet;
 import net.emaze.dysfunctional.options.Either;
 import net.emaze.dysfunctional.options.Maybe;
 import net.emaze.dysfunctional.tuples.Triple;
-import net.emaze.maple.beans.NonCachingBeans;
 import org.junit.Assert;
 import org.junit.Test;
 
-/**
- *
- * @author rferranti
- */
 public class KebabTest {
 
     final ResolvingMapper mapper = ResolvingMapper.Builder.defaults().build();

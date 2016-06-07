@@ -11,10 +11,7 @@ import net.emaze.maple.Converters;
 import net.emaze.maple.Mutator;
 import org.springframework.core.ResolvableType;
 
-/**
- *
- * @author rferranti
- */
+
 public class BeanToBeanConverter implements Converter {
 
     private final Beans beans;

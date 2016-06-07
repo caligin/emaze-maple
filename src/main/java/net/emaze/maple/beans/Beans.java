@@ -6,10 +6,7 @@ import net.emaze.dysfunctional.options.Maybe;
 import net.emaze.maple.Accessor;
 import net.emaze.maple.Mutator;
 
-/**
- *
- * @author rferranti
- */
+
 public interface Beans {
 
     Map<String, Accessor> accessors(Class<?> cls);

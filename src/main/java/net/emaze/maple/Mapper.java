@@ -15,10 +15,7 @@ import net.emaze.dysfunctional.options.Maybe;
 import net.emaze.dysfunctional.tuples.Pair;
 import net.emaze.dysfunctional.tuples.Triple;
 
-/**
- *
- * @author rferranti
- */
+
 public interface Mapper {
 
     <R> R map(Object source, Class<R> targetClass);

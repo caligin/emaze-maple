@@ -7,10 +7,7 @@ import net.emaze.maple.beans.NonCachingBeans;
 import org.junit.Assert;
 import org.junit.Test;
 
-/**
- *
- * @author rferranti
- */
+
 public class MapperTest {
 
     final ResolvingMapper mapper = ResolvingMapper.Builder.defaults().build();

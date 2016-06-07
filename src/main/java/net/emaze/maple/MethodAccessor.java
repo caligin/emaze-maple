@@ -4,10 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import org.springframework.core.ResolvableType;
 
-/**
- *
- * @author rferranti
- */
+
 public class MethodAccessor implements Accessor {
 
     private final Method method;

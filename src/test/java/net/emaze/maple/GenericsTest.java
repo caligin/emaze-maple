@@ -4,10 +4,7 @@ import org.junit.Assert;
 import net.emaze.dysfunctional.options.Maybe;
 import org.junit.Test;
 
-/**
- *
- * @author rferranti
- */
+
 public class GenericsTest {
 
     final ResolvingMapper mapper = ResolvingMapper.Builder.defaults().build();

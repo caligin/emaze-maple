@@ -2,10 +2,7 @@ package net.emaze.maple.proxies;
 
 import org.springframework.cglib.proxy.Enhancer;
 
-/**
- *
- * @author rferranti
- */
+
 public class SpringCglibProxyInspector implements ProxyInspector {
 
     @Override

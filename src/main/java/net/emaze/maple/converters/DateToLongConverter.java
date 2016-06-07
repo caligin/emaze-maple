@@ -6,10 +6,7 @@ import net.emaze.maple.Converter;
 import net.emaze.maple.Converters;
 import org.springframework.core.ResolvableType;
 
-/**
- *
- * @author rferranti
- */
+
 public class DateToLongConverter implements Converter {
 
     private static final ResolvableType DATE_TYPE = ResolvableType.forClass(Date.class);

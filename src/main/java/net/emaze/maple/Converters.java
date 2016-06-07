@@ -6,10 +6,7 @@ import java.util.Set;
 import net.emaze.dysfunctional.options.Maybe;
 import org.springframework.core.ResolvableType;
 
-/**
- *
- * @author rferranti
- */
+
 public class Converters {
 
     private final Iterable<Converter> converters;

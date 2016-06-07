@@ -2,10 +2,7 @@ package net.emaze.maple;
 
 import org.junit.Test;
 
-/**
- *
- * @author rferranti
- */
+
 public class EdgeCaseTests {
 
     public static class Wrapper<T> {

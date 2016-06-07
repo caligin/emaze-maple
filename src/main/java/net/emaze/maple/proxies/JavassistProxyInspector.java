@@ -2,10 +2,7 @@ package net.emaze.maple.proxies;
 
 import javassist.util.proxy.ProxyFactory;
 
-/**
- *
- * @author rferranti
- */
+
 public class JavassistProxyInspector implements ProxyInspector {
 
     @Override

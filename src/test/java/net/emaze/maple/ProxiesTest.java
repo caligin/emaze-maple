@@ -4,10 +4,7 @@ import net.emaze.maple.proxies.ProxyInspectors;
 import org.junit.Assert;
 import org.junit.Test;
 
-/**
- *
- * @author rferranti
- */
+
 public class ProxiesTest {
 
     public static class Bean {

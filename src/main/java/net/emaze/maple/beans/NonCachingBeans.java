@@ -14,10 +14,7 @@ import net.emaze.maple.MethodAccessor;
 import net.emaze.maple.MethodMutator;
 import net.emaze.maple.Mutator;
 
-/**
- *
- * @author rferranti
- */
+
 public class NonCachingBeans implements Beans {
 
     @Override

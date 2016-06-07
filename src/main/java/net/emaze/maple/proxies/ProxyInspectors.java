@@ -3,10 +3,7 @@ package net.emaze.maple.proxies;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author rferranti
- */
+
 public class ProxyInspectors {
 
     private final ProxyInspector[] inspectors;

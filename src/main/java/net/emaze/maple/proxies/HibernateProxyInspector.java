@@ -2,10 +2,7 @@ package net.emaze.maple.proxies;
 
 import org.hibernate.proxy.HibernateProxy;
 
-/**
- *
- * @author rferranti
- */
+
 public class HibernateProxyInspector implements ProxyInspector {
 
     @Override
