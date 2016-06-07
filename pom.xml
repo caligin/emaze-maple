@@ -3,27 +3,21 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.emaze</groupId>
     <artifactId>emaze-maple</artifactId>
-    <name>emaze-maple</name>
     <version>2.3-SNAPSHOT</version>
-    <packaging>jar</packaging>
-    <parent>
-        <artifactId>emaze-parent</artifactId>
-        <groupId>net.emaze</groupId>
-        <version>2.0</version>
-    </parent>
-    
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>net.emaze</groupId>
             <artifactId>emaze-dysfunctional</artifactId>
-            <version>5.2</version>
+            <version>5.5</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
             <version>4.0.6.RELEASE</version>
         </dependency>
-
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
@@ -36,16 +30,41 @@
             <version>3.1</version>
             <optional>true</optional>
         </dependency>
-        
-                        
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+            <version>4.11</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.5.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
     <scm>
         <developerConnection>scm:git:file://${basedir}</developerConnection>
-      <tag>HEAD</tag>
-  </scm>
+        <tag>HEAD</tag>
+    </scm>
 </project>
