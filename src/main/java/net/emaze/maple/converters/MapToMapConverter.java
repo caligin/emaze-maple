@@ -27,10 +27,10 @@ public class MapToMapConverter implements Converter {
         for (Map.Entry<Object, Object> sourceEntry : ((Map<Object, Object>) source).entrySet()) {
             final Maybe<?> k = converters.convert(sourceKeyType, sourceEntry.getKey(), targetKeyType);
             final Maybe<?> v = converters.convert(sourceValueType, sourceEntry.getValue(), targetValueType);
-            if (!k.hasValue() || !v.hasValue()) {
+            if (!k.isPresent()|| !v.isPresent()) {
                 return Maybe.nothing();
             }
-            r.put(k.value(), v.value());
+            r.put(k.get(), v.get());
         }
         return Maybe.just(r);
     }

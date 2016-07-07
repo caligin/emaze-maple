@@ -26,8 +26,8 @@ public class TripleToTripleConverter implements Converter {
         final Maybe<?> fst = converters.convert(fstSourceType, p.first(), fstTargetType);
         final Maybe<?> snd = converters.convert(sndSourceType, p.second(), sndTargetType);
         final Maybe<?> trd = converters.convert(trdSourceType, p.third(), trdTargetType);
-        if (fst.hasValue() && snd.hasValue() && trd.hasValue()) {
-            return Maybe.just(Triple.of(fst.value(), snd.value(), trd.value()));
+        if (fst.isPresent()&& snd.isPresent()&& trd.isPresent()) {
+            return Maybe.just(Triple.of(fst.get(), snd.get(), trd.get()));
         }
         return Maybe.nothing();
     }

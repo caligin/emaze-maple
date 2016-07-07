@@ -44,7 +44,7 @@ public class GenericsTest {
         final SourceWithField src = new SourceWithField();
         src.field = Maybe.just("1");
         final TargetWithField got = mapper.map(src, TargetWithField.class);
-        Assert.assertEquals(Integer.valueOf(1), got.field.value());
+        Assert.assertEquals(Integer.valueOf(1), got.field.get());
     }
 
     @Test
@@ -52,7 +52,7 @@ public class GenericsTest {
         final SourceWithAccessor src = new SourceWithAccessor();
         src.field = Maybe.just("1");
         final TargetWithMutator got = mapper.map(src, TargetWithMutator.class);
-        Assert.assertEquals(Integer.valueOf(1), got.field.value());
+        Assert.assertEquals(Integer.valueOf(1), got.field.get());
     }
 
 }

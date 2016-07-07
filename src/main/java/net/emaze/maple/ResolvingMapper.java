@@ -34,7 +34,6 @@ import net.emaze.maple.proxies.ProxyInspector;
 import org.springframework.core.ResolvableType;
 import net.emaze.maple.proxies.ProxyInspectors;
 
-
 public class ResolvingMapper implements Mapper {
 
     private final Converters converters;
@@ -50,7 +49,7 @@ public class ResolvingMapper implements Mapper {
         final Class<?> sourceClass = proxyInspectors.inspect(source);
         final ResolvableType sourceType = sourceClass == null ? null : ResolvableType.forClass(sourceClass);
         final ResolvableType targetType = ResolvableType.forClass(targetClass);
-        return (R) converters.convert(sourceType, source, targetType).value();
+        return (R) converters.convert(sourceType, source, targetType).get();
     }
 
     public static class Builder {

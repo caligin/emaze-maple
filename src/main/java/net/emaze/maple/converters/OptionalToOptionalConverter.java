@@ -23,6 +23,6 @@ public class OptionalToOptionalConverter implements Converter {
         final ResolvableType elSourceType = sourceType.getGeneric(0);
         final ResolvableType elTargetType = targetType.getGeneric(0);
         final Maybe<?> maybeConverted = converters.convert(elSourceType, m.get(), elTargetType);
-        return maybeConverted.hasValue() ? Maybe.just(Optional.of(maybeConverted.value())) : Maybe.nothing();
+        return maybeConverted.isPresent()? Maybe.just(Optional.of(maybeConverted.get())) : Maybe.nothing();
     }
 }

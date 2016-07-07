@@ -16,12 +16,12 @@ public class MaybeToMaybeConverter implements Converter {
     @Override
     public Maybe<?> convert(Converters converters, ResolvableType sourceType, Object source, ResolvableType targetType) {
         final Maybe<?> m = (Maybe<?>) source;
-        if (!m.hasValue()) {
+        if (!m.isPresent()) {
             return Maybe.just(Maybe.nothing());
         }
         final ResolvableType elSourceType = sourceType.getGeneric(0);
         final ResolvableType elTargetType = targetType.getGeneric(0);
-        final Maybe<?> maybeConverted = converters.convert(elSourceType, m.value(), elTargetType);
-        return maybeConverted.hasValue() ? Maybe.just(maybeConverted) : Maybe.nothing();
+        final Maybe<?> maybeConverted = converters.convert(elSourceType, m.get(), elTargetType);
+        return maybeConverted.isPresent()? Maybe.just(maybeConverted) : Maybe.nothing();
     }
 }

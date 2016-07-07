@@ -27,18 +27,18 @@ public class IterableToIterableConverter implements Converter {
         final Class<?> sourceClass = sourceType.resolve();
         final Class<?> targetClass = targetType.resolve();
         final Maybe<Collection<Object>> maybeCollection = createCollection(targetClass);
-        if (!maybeCollection.hasValue()) {
+        if (!maybeCollection.isPresent()) {
             return Maybe.nothing();
         }
-        final Collection<Object> collection = maybeCollection.value();
+        final Collection<Object> collection = maybeCollection.get();
         final ResolvableType targetElementType = targetType.getGeneric(0);
         final ResolvableType sourceElementType = sourceType.getGeneric(0);
         for (Object object : (Iterable<?>) source) {
             final Maybe<?> el = converters.convert(sourceElementType, object, targetElementType);
-            if (!el.hasValue()) {
+            if (!el.isPresent()) {
                 return Maybe.nothing();
             }
-            collection.add(el.value());
+            collection.add(el.get());
         }
         return Maybe.just(collection);
     }

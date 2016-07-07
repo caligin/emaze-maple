@@ -15,7 +15,6 @@ import net.emaze.dysfunctional.options.Maybe;
 import net.emaze.dysfunctional.tuples.Pair;
 import net.emaze.dysfunctional.tuples.Triple;
 
-
 public interface Mapper {
 
     <R> R map(Object source, Class<R> targetClass);
@@ -98,22 +97,22 @@ public interface Mapper {
     }
 
     default <RL, RR, SL, SR> Either<RL, RR> map(Either<SL, SR> source, final Class<RL> leftClass, final Class<RR> rightClass) {
-        if (source.maybe().hasValue()) {
-            return Either.<RL, RR>right(source.maybe().fmap((r) -> map(r, rightClass)).value());
+        if (source.right().isPresent()) {
+            return Either.<RL, RR>right(source.right().map((r) -> map(r, rightClass)).get());
         }
-        return Either.<RL, RR>left(source.flip().maybe().fmap((l) -> map(l, leftClass)).value());
+        return Either.<RL, RR>left(source.flip().right().map((l) -> map(l, leftClass)).get());
     }
 
     default <R1, R2, T1, T2> Pair<R1, R2> map(Pair<T1, T2> source, Class<R1> firstClass, Class<R2> secondClass) {
-        return source.fmap((f) -> map(f, firstClass), (s) -> map(s, secondClass));
+        return source.map((f) -> map(f, firstClass), (s) -> map(s, secondClass));
     }
 
     default <R1, R2, R3, T1, T2, T3> Triple<R1, R2, R3> map(Triple<T1, T2, T3> source, Class<R1> firstClass, Class<R2> secondClass, Class<R3> thirdClass) {
-        return source.fmap((f) -> map(f, firstClass), (s) -> map(s, secondClass), (t) -> map(t, thirdClass));
+        return source.map((f) -> map(f, firstClass), (s) -> map(s, secondClass), (t) -> map(t, thirdClass));
     }
 
     default <R, T> Maybe<R> map(Maybe<T> source, final Class<R> elementClass) {
-        return source.fmap((s) -> map(s, elementClass));
+        return source.map((s) -> map(s, elementClass));
     }
 
     default <R, T> Optional<R> map(Optional<T> source, Class<R> elementClass) {

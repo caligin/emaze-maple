@@ -23,8 +23,8 @@ public class PairToPairConverter implements Converter {
         final Pair<?, ?> p = (Pair<?, ?>) source;
         final Maybe<?> fst = converters.convert(fstSourceType, p.first(), fstTargetType);
         final Maybe<?> snd = converters.convert(sndSourceType, p.second(), sndTargetType);
-        if (fst.hasValue() && snd.hasValue()) {
-            return Maybe.just(Pair.of(fst.value(), snd.value()));
+        if (fst.isPresent()&& snd.isPresent()) {
+            return Maybe.just(Pair.of(fst.get(), snd.get()));
         }
         return Maybe.nothing();
     }

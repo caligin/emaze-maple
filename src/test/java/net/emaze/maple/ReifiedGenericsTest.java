@@ -56,7 +56,7 @@ public class ReifiedGenericsTest {
         final ReifiedSourceWithField src = new ReifiedSourceWithField();
         src.field = Maybe.just("1");
         final ReifiedTargetWithField got = mapper.map(src, ReifiedTargetWithField.class);
-        Assert.assertEquals(Integer.valueOf(1), got.field.value());
+        Assert.assertEquals(Integer.valueOf(1), got.field.get());
     }
 
     @Test
@@ -64,7 +64,7 @@ public class ReifiedGenericsTest {
         final ReifiedSourceWithAccessor src = new ReifiedSourceWithAccessor();
         src.field = Maybe.just("1");
         final ReifiedTargetWithMutator got = mapper.map(src, ReifiedTargetWithMutator.class);
-        Assert.assertEquals(Integer.valueOf(1), got.field.value());
+        Assert.assertEquals(Integer.valueOf(1), got.field.get());
     }
 
 }
